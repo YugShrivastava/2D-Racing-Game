@@ -366,6 +366,8 @@ function startSpawningObstacles() {
 // startSpawningObstacles();
 // moveCar();
 
+const countDownImg = document.getElementById('countdown-img')
+
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
@@ -379,6 +381,7 @@ function startCountdown(callback) {
 
     function displayCountdown() {
         clear();
+        ctx.drawImage(countDownImg, 223.5, 0, 753, 1000);
         ctx.font = "48px Arial";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
@@ -386,7 +389,7 @@ function startCountdown(callback) {
         ctx.fillText(
             `Starting in ${countdown}`,
             canvas.width / 2,
-            canvas.height / 2
+            canvas.height / 2 - 400
         );
 
         if (countdown > 0) {
@@ -399,6 +402,15 @@ function startCountdown(callback) {
 
     displayCountdown();
 }
+
+const startScreenSound = new Audio('./assets/audio/start-screen.ogg')
+startScreenSound.loop = true;
+startScreenSound.play();
+
+const raceStartSound = new Audio('./assets/audio/race-start.mp3')
+
+const soundTrack = new Audio('./assets/audio/random-race.mp3');
+soundTrack.loop = true;
 
 function startGame(mode) {
     gameMode = mode;
@@ -417,7 +429,10 @@ function startGame(mode) {
         isScorePausedP2 = true;
     }
 
+    raceStartSound.play();
+    startScreenSound.muted = true;
     startCountdown(() => {
+        soundTrack.play();
         startSpawningObstacles();
         moveCar();
     });

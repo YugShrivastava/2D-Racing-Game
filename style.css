@@ -21,7 +21,7 @@ body {
   #car{
       display: none;
   }
-  #spikes{
+  #spikes, #countdown-img{
       display: none;
   }
   #start-screen {
@@ -95,4 +95,3 @@ body {
   #canvas {
     display: none; /* Hide canvas until game starts */
   }
-  
