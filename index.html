@@ -1,32 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Rage</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="./game.js" defer></script>
-</head>
-<body>
-    <div id="start-screen">
-        <h1>Road Rage</h1>
-        <p>Select Mode:</p>
-        <button id="one-player-btn">1 Player</button>
-        <button id="two-player-btn">2 Players</button>
-    </div>
-    <canvas id="canvas" height="1000" width="1200"></canvas>
-    <img src="./assets/car-p1.png" alt="" id="car-p1">
-    <img src="./assets/car-p2.png" alt="" id="car-p2">
-    <img src="./assets/big-car.png" alt="" id="big-car">
-    <img src="./assets/big-truck.png" alt="" id="big-truck">
-    <img src="./assets/small-car.png" alt="" id="small-car">
-    <img src="./assets/small-truck.png" alt="" id="small-truck">
-    <img src="./assets/spikes.png" alt="" id="spikes">
-    <img src="./assets/countdown-img.jpeg" alt="" id="countdown-img">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Road Rage</title>
+        <link rel="stylesheet" href="./style.css" />
+        <script src="./game.js" defer></script>
+    </head>
+    <body>
+        <div id="start-screen">
+            <h1>Road Rage</h1>
+            <p>Select Mode:</p>
+            <button id="one-player-btn">1 Player</button>
+            <button id="two-player-btn">2 Players</button>
+            <p>Instructions:</p>
+            <div id="c-div">
+                <img
+                    src="./assets/arrows.png"
+                    alt="control-P1"
+                    width="100px"
+                    class="control-img"
+                />
+                <p>Controls for Player 1</p>
+            </div>
+            <div id="c-div">
+                <img
+                    src="./assets/wasd-final.png"
+                    alt="control-P2"
+                    width="100px"
+                    class="control-img"
+                />
+                <p>Controls for Player 2</p>
+            </div>
+            <p style="font-size: 1rem;">
+                **This game includes sound effects for a better gaming
+                experience. Please ensure your device's sound is enabled.**
+            </p>
+        </div>
+        <canvas id="canvas" height="1000" width="1200"></canvas>
+        <img src="./assets/car-p1.png" alt="" id="car-p1" />
+        <img src="./assets/car-p2.png" alt="" id="car-p2" />
+        <img src="./assets/big-car.png" alt="" id="big-car" />
+        <img src="./assets/big-truck.png" alt="" id="big-truck" />
+        <img src="./assets/small-car.png" alt="" id="small-car" />
+        <img src="./assets/small-truck.png" alt="" id="small-truck" />
+        <img src="./assets/spikes.png" alt="" id="spikes" />
+        <img src="./assets/countdown-img.jpeg" alt="" id="countdown-img" />
 
-    <div id="end-screen">
-        <h1>Player <span id="player-won"></span> won!!</h1>
-        <p>Main Menu in <span id="end-count"></span></p>
-    </div>
-</body>
+        <div id="end-screen">
+            <h1>Player <span id="player-won"></span> won!!</h1>
+            <div id="score-div">
+                <p id="score-p1"></p>
+                <p id="score-p2"></p>
+            </div>
+            <p>Main Menu in <span id="end-count"></span></p>
+        </div>
+    </body>
 </html>

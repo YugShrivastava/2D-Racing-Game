@@ -246,6 +246,9 @@ function updateObstacles() {
     }
 }
 
+const carCrashSound = new Audio('./assets/audio/car-crash.mp3');
+const carCrashSound2 = new Audio('./assets/audio/car-crash.mp3');
+
 function playerCollide() {
     if (
         carP1.x < carP2.x + carP2.w &&
@@ -254,6 +257,7 @@ function playerCollide() {
         carP1.y + carP1.h > carP2.y
     ) {
         isScorePausedP1 = true;
+        carCrashSound.play();
     }
 
     if (
@@ -274,6 +278,7 @@ function detectWalls() {
         carP1.y + carP1.h > canvas.height
     ) {
         isScorePausedP1 = true;
+        carCrashSound.play();
     }
 
     if (
@@ -283,6 +288,7 @@ function detectWalls() {
         carP2.y + carP2.h > canvas.height
     ) {
         isScorePausedP2 = true;
+        carCrashSound2.play();
     }
 }
 
@@ -296,6 +302,7 @@ function obstacleCollide() {
 
         if (p1Collide) {
             isScorePausedP1 = true;
+            carCrashSound.play();
         }
 
         const p2Collide =
@@ -306,6 +313,7 @@ function obstacleCollide() {
 
         if (p2Collide) {
             isScorePausedP2 = true;
+            carCrashSound2.play();
         }
     });
 }
@@ -410,6 +418,13 @@ function endGame() {
     else if (scoreP2 < scoreP1) won.innerText = "1";
     else won.innerText = "1 and 2";
 
+    const displayScoreP1 = document.getElementById('score-p1');
+    displayScoreP1.innerText = "Score P1: " + scoreP1;
+    if(gameMode == 2){
+        const displayScoreP2 = document.getElementById('score-p2');
+        displayScoreP2.innerText = "Score P2: " + scoreP2;
+    }
+
     const counter = document.getElementById("end-count");
     countToMenu(counter);
 }
@@ -434,6 +449,7 @@ function moveCar() {
         carP1.dx = 0;
         carP1.speedY = 0;
         carP1.speedX = 0;
+        setTimeout(() => {carCrashSound.muted = true;}, 500)
     }
     if (gameMode == 2) {
         if (!isScorePausedP2) scoreP2++;
@@ -442,6 +458,7 @@ function moveCar() {
             carP2.dx = 0;
             carP2.speedY = 0;
             carP2.speedX = 0;
+            setTimeout(() => {carCrashSound2.muted = true;}, 500)
         }
     }
 

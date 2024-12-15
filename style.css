@@ -95,3 +95,13 @@ body {
   #canvas {
     display: none; /* Hide canvas until game starts */
   }
+  
+  .control-img {
+    filter: invert(1);
+  }
+
+  #c-div{
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
