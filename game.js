@@ -1,6 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const carImg = document.getElementById("car");
+const carImgP1 = document.getElementById("car-p1");
+const carImgP2 = document.getElementById("car-p2");
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const spikes = document.getElementById("spikes");
@@ -8,14 +9,41 @@ const endScreen = document.getElementById("end-screen");
 
 endScreen.style.display = "none";
 
+const laneWidth = 5;
+const laneHeight = 40;
+const laneSpacing = 20;
+const laneSpeed = 7;
+let lanes = [];
+
+function initializeLanes() {
+    const numLanes = Math.ceil(canvas.height / (laneHeight + laneSpacing)) + 1;
+    for (let i = 0; i < numLanes; i++) {
+        lanes.push({
+            x: canvas.width / 2 - laneWidth / 2,
+            y: i * (laneHeight + laneSpacing),
+        });
+    }
+    for (let i = 0; i < numLanes; i++) {
+        lanes.push({
+            x: 297.5,
+            y: i * (laneHeight + laneSpacing),
+        });
+    }for (let i = 0; i < numLanes; i++) {
+        lanes.push({
+            x: 897.5,
+            y: i * (laneHeight + laneSpacing),
+        });
+    }
+}
+
 let gameMode = 0;
 let scoreP1 = 0;
 let scoreP2 = 0;
 let spawnChance = 0.4;
-const maxSpawnChance = 1;
-const spawnChanceAddition = 0.1;
-let spawnInterval = 1500;
-const minSpawnInterval = 300;
+const maxSpawnChance = 0.85;
+const spawnChanceAddition = 0.05;
+let spawnInterval = 1600;
+const minSpawnInterval = 500;
 const intervalReduction = 50;
 let isScorePausedP1 = false;
 let isScorePausedP2 = false;
@@ -44,11 +72,11 @@ const carP2 = {
 };
 
 function drawCarP1() {
-    ctx.drawImage(carImg, 5, 0, 210, 450, carP1.x, carP1.y, carP1.w, carP1.h);
+    ctx.drawImage(carImgP1, carP1.x, carP1.y, carP1.w, carP1.h);
 }
 
 function drawCarP2() {
-    ctx.drawImage(carImg, 395, 0, 210, 450, carP2.x, carP2.y, carP2.w, carP2.h);
+    ctx.drawImage(carImgP2, carP2.x, carP2.y, carP2.w, carP2.h);
 }
 
 function moveDown(num) {
@@ -59,6 +87,7 @@ function moveDown(num) {
 function moveUp(num) {
     if (num == 1) carP1.dy = -carP1.speedY;
     else carP2.dy = -carP2.speedY;
+
 }
 
 function moveLeft(num) {
@@ -111,6 +140,20 @@ function keyUp(e) {
     }
 }
 
+const obWidth = [40, 50, 60, 65];
+const obHeight = [70, 80, 90, 120];
+
+function getRandomElement(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function matchHeight(width){
+    if(width == 40) return 70;
+    else if(width == 50) return 80;
+    else if (width == 60) return 90;
+    else return 120;
+}
+
 function spawnObstacle() {
     const lanes = [
         { xStart: 0, xEnd: 300 },
@@ -124,8 +167,8 @@ function spawnObstacle() {
     for (let i = 0; i < lanes.length; i++) {
         if (i === excludedLaneIndex) continue;
 
-        const randomWidth = Math.floor(Math.random() * (90 - 20 + 1)) + 20;
-        const randomHeight = Math.floor(Math.random() * (60 - 30 + 1)) + 30;
+        const randomWidth = getRandomElement(obWidth);
+        const randomHeight = matchHeight(randomWidth);
         const randomX =
             Math.floor(
                 Math.random() * (lanes[i].xEnd - lanes[i].xStart - randomWidth)
@@ -143,6 +186,11 @@ function spawnObstacle() {
     }
 }
 
+const smallCar = document.getElementById('small-car');
+const bigCar = document.getElementById('big-car');
+const smallTruck = document.getElementById('small-truck');
+const bigTruck = document.getElementById('big-truck');
+
 function updateObstacles() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
         obstacles[i].y += obstacles[i].speed;
@@ -151,13 +199,49 @@ function updateObstacles() {
             obstacles.splice(i, 1);
         } else {
             // ctx.fillStyle = "red"; // Obstacle color
-            ctx.drawImage(
-                spikes,
-                obstacles[i].x,
-                obstacles[i].y,
-                obstacles[i].w,
-                obstacles[i].h
-            );
+            // ctx.drawImage(
+            //     spikes,
+            //     obstacles[i].x,
+            //     obstacles[i].y,
+            //     obstacles[i].w,
+            //     obstacles[i].h
+            // );
+            if(obstacles[i].w == 40){
+                ctx.drawImage(
+                    smallCar,
+                    obstacles[i].x,
+                    obstacles[i].y,
+                    obstacles[i].w,
+                    obstacles[i].h
+                );
+            }
+            else if(obstacles[i].w == 50){
+                ctx.drawImage(
+                    bigCar,
+                    obstacles[i].x,
+                    obstacles[i].y,
+                    obstacles[i].w,
+                    obstacles[i].h
+                );
+            }
+            else if(obstacles[i].w == 60){
+                ctx.drawImage(
+                    smallTruck,
+                    obstacles[i].x,
+                    obstacles[i].y,
+                    obstacles[i].w,
+                    obstacles[i].h
+                );
+            }
+            else{
+                ctx.drawImage(
+                    bigTruck,
+                    obstacles[i].x,
+                    obstacles[i].y,
+                    obstacles[i].w,
+                    obstacles[i].h
+                );
+            }
         }
     }
 }
@@ -248,30 +332,47 @@ function clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function lanes() {
-    ctx.fillStyle = "white";
-    ctx.beginPath();
-    ctx.moveTo(295, 0);
-    ctx.lineTo(305, 0);
-    ctx.lineTo(305, canvas.height);
-    ctx.lineTo(295, canvas.height);
-    ctx.closePath();
-    ctx.fill();
+// function lanes() {
+//     ctx.fillStyle = "white";
+//     ctx.beginPath();
+//     ctx.moveTo(295, 0);
+//     ctx.lineTo(305, 0);
+//     ctx.lineTo(305, canvas.height);
+//     ctx.lineTo(295, canvas.height);
+//     ctx.closePath();
+//     ctx.fill();
 
-    ctx.moveTo(595, 0);
-    ctx.lineTo(605, 0);
-    ctx.lineTo(605, canvas.height);
-    ctx.lineTo(595, canvas.height);
-    ctx.closePath();
-    ctx.fill();
+//     ctx.moveTo(595, 0);
+//     ctx.lineTo(605, 0);
+//     ctx.lineTo(605, canvas.height);
+//     ctx.lineTo(595, canvas.height);
+//     ctx.closePath();
+//     ctx.fill();
 
-    ctx.moveTo(895, 0);
-    ctx.lineTo(905, 0);
-    ctx.lineTo(905, canvas.height);
-    ctx.lineTo(895, canvas.height);
-    ctx.closePath();
-    ctx.fill();
+//     ctx.moveTo(895, 0);
+//     ctx.lineTo(905, 0);
+//     ctx.lineTo(905, canvas.height);
+//     ctx.lineTo(895, canvas.height);
+//     ctx.closePath();
+//     ctx.fill();
+// }
+
+function updateLanes() {
+    lanes.forEach((lane) => {
+        lane.y += laneSpeed;
+        if (lane.y > canvas.height) {
+            lane.y = -laneHeight; 
+        }
+    });
 }
+
+function drawLanes() {
+    ctx.fillStyle = "white";
+    lanes.forEach((lane) => {
+        ctx.fillRect(lane.x, lane.y, laneWidth, laneHeight);
+    });
+}
+
 
 function displayScore() {
     ctx.font = "24px Arial";
@@ -316,7 +417,8 @@ function endGame() {
 function moveCar() {
     clear();
 
-    lanes();
+    updateLanes();
+    drawLanes();
 
     updateObstacles();
 
@@ -433,6 +535,7 @@ function startGame(mode) {
     startScreenSound.muted = true;
     startCountdown(() => {
         soundTrack.play();
+        initializeLanes();
         startSpawningObstacles();
         moveCar();
     });

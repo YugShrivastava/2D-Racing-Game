@@ -11,17 +11,17 @@ body {
     overflow: hidden;
   }
   #canvas {
-    background-color: black;
+    background-color: rgb(37, 37, 37);
   }
   #bg-img {
     height: 30vh;
     width: 100%;
     background-color: antiquewhite;
   }
-  #car{
+  /* #car{
       display: none;
-  }
-  #spikes, #countdown-img{
+  } */
+  #car-p1, #car-p2, #small-truck, #small-car, #big-truck, #big-car, #spikes, #countdown-img{
       display: none;
   }
   #start-screen {
